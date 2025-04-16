@@ -148,7 +148,7 @@ const defaultSideEffectsTriggerId = settingId =>
   'trigger' + capitalize(settingId) + 'SideEffects'
 /*****/
 
-const state = {
+const defaultState = () => ({
   autoplayPlaylists: true,
   autoplayVideos: true,
   backendFallback: process.env.SUPPORTS_LOCAL_API,
@@ -305,7 +305,8 @@ const state = {
   defaultInvidiousInstance: '',
   defaultVolume: 1,
   uiScale: 100,
-}
+})
+const state = defaultState()
 
 const sideEffectHandlers = {
   currentLocale: async ({ dispatch }, value) => {
@@ -409,7 +410,14 @@ const customState = {
 const customGetters = {
 }
 
-const customMutations = {}
+const customMutations = {
+  RESET_ALL_SETTINGS(state) {
+    const defaults = defaultState()
+    for (const key in defaults) {
+      state[key] = defaults[key]
+    }
+  }
+}
 
 const customActions = {
   grabUserSettings: async ({ commit, dispatch, state }) => {
@@ -438,6 +446,35 @@ const customActions = {
       }
     } catch (errMessage) {
       console.error(errMessage)
+    }
+  },
+
+  resetAllSettings: async ({ commit, dispatch }) => {
+    try {
+      const defaults = defaultState() // Get fresh default values
+
+      const allSettingKeys = Object.keys(defaults)
+
+      const promises = allSettingKeys.map(async settingId => {
+        const defaultValue = defaultState()[settingId] // Use defaultState() values
+
+        // Update database with default value
+        await DBSettingHandlers.upsert(settingId, defaultValue)
+
+        // Trigger side effects if applicable
+        if (settingsWithSideEffects.includes(settingId)) {
+          await dispatch(defaultSideEffectsTriggerId(settingId), defaultValue)
+        }
+
+        // Commit mutation to update Vuex state
+        commit(defaultMutationId(settingId), defaultValue)
+      })
+
+      await Promise.all(promises)
+      return true
+    } catch (error) {
+      console.error('Failed to reset settings:', error)
+      throw error
     }
   },
 

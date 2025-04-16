@@ -1,78 +1,144 @@
+/* General layout for the settings page */
 .settingsPage {
   display: flex;
   gap: 20px;
+  margin-block: 20px; /* Added consistent margin for better spacing */
 }
 
+/* Settings sections and switch rows */
 .settingsSections,
 .switchRow {
   overflow-x: hidden;
   max-inline-size: 90%;
 }
 
+/* Switch row styling */
 .switchRow {
   display: flex;
-  margin-inline-end: auto;
   align-items: center;
   margin-block-end: 5px;
+  margin-inline-end: auto; /* Pushes the switch row to the left */
 }
 
+/* Toggle button styling */
 .settingsToggle {
   padding-block: 0;
   margin-block: 0;
 }
 
+/* Section title anchor link target */
 .section {
-  /* enables anchor link clicks to land with the section title in the top quarter of the page */
   scroll-margin-top: 24vh;
 }
 
+/* --- Desktop Styles (width >= 1015px) --- */
 @media only screen and (width >= 1015px) {
   .section + .section {
     padding-block-start: 20px;
   }
 
   .settingsSections:last-child {
-    /* Add enough blank space to have the last setting section be active on the FtSettingsMenu when scrolled to */
+    /* Add space for the last section to be active when scrolled to */
     margin-block-end: calc(76vh - 150px);
   }
 }
 
+/* --- Medium Screen Styles (width <= 1200px) --- */
 @media only screen and (width <= 1200px) {
   .settingsSections,
   .switchRow {
-    max-inline-size: 100%;
+    max-inline-size: 100%; /* Full width for smaller screens */
   }
 }
 
+/* --- Mobile Styles (width <= 1015px) --- */
 @media only screen and (width <= 1015px) {
-  /* Needed to overcome routerView styling for margin-block */
-  .settingsPage.settingsPage {
-    margin-block: 0;
+  /* Adjust settings page layout for mobile */
+  .settingsPage {
     flex-direction: column;
     gap: 10px;
+    margin-block: 0; /* Remove default margin on mobile */
   }
 
   .switchRow,
   .settingsSections {
-    margin-inline: auto;
+    margin-inline: auto; /* Center content */
   }
 
   .switchRow {
-    display: none;
+    display: none; /* Hide switch row on mobile */
   }
 
   .settingsSections {
     overflow-y: hidden;
-    margin-block-end: 80px;
+    margin-block-end: 80px; /* Spacing at the bottom of settings sections */
   }
 
   .hideOnMobile {
-    display: none;
+    display: none; /* Hides elements with this class on mobile */
   }
 
   .returnToMenuMobileIcon {
     margin-block-start: 20px;
     block-size: 30px;
     font-size: 30px;
+  }
+
+  /* --- Top Actions Bar --- */
+  .settings-top-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center; /* Vertically center items */
+    padding-block: 12px;
+    padding-inline: 20px;
+    background: var(--settings-header-bg, #f5f5f5);
+    border-block-end: 1px solid var(--border-color, #e0e0e0);
+    margin-block-end: 16px;
+  }
+
+  /* --- Reset Button Styling --- */
+  .reset-defaults-btn {
+    --btn-bg: var(--danger-color, #dc3545);
+    --btn-text: #fff;
+    --btn-hover: var(--danger-hover, #c82333);
+
+    background-color: var(--btn-bg);
+    color: var(--btn-text);
+    border-radius: 4px;
+    padding-block: 8px;
+    padding-inline: 16px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 10%);
+    cursor: pointer; /* Indicate it's clickable */
+  }
+
+  .reset-defaults-btn:hover {
+    background-color: var(--btn-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgb(0 0 0 / 15%);
+  }
+
+  .reset-defaults-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 10%);
+  }
+
+  /* --- Reset Button Icon --- */
+  .reset-defaults-btn .fa-icon {
+    margin-inline-end: 8px;
+  }
+
+  /* --- Mobile Responsiveness (width <= 768px) --- */
+  @media (width <= 768px) {
+    .settings-top-actions {
+      padding-block: 10px;
+      padding-inline: 15px;
+      justify-content: center; /* Center button on very small screens */
+    }
+
+    .reset-defaults-btn {
+      inline-size: 100%; /* Full width on small screens */
+    }
   }
 }

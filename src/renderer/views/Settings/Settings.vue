@@ -1,6 +1,23 @@
 <template>
   <div class="settingsPage">
     <template v-if="unlocked">
+      <!-- Added Restore Defaults Button -->
+      <div class="settings-top-actions">
+        <ft-button
+          :label="$t('restore Defaults')"
+          :icon="['fas', 'undo']"
+          class="resetDefaultsButton"
+          @click="resetAllSettings"
+        />
+      </div>
+      <ft-toggle-switch
+        class="settingsToggle"
+        :label="$t('Settings.Sort Settings Sections (A-Z)')"
+        :default-value="settingsSectionSortEnabled"
+        :compact="false"
+        @change="updateSettingsSectionSortEnabled"
+      />
+
       <div v-show="settingsSectionTypeOpenInMobile != null">
         <font-awesome-icon
           :icon="['fas', 'angle-left']"
@@ -28,13 +45,6 @@
             :icon="['fas', 'keyboard']"
             @click="showKeyboardShortcutPrompt"
           />
-          <ft-toggle-switch
-            class="settingsToggle"
-            :label="$t('Settings.Sort Settings Sections (A-Z)')"
-            :default-value="settingsSectionSortEnabled"
-            :compact="false"
-            @change="updateSettingsSectionSortEnabled"
-          />
         </div>
         <div class="settingsSections">
           <template
@@ -57,6 +67,5 @@
     />
   </div>
 </template>
-
 <script src="./Settings.js" />
 <style scoped src="./Settings.css" />

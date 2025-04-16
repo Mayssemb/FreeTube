@@ -39,6 +39,7 @@ export default defineComponent({
     'ft-button': FtButton,
     'ft-toggle-switch': FtToggleSwitch,
     'ft-settings-menu': FtSettingsMenu,
+
     ...(process.env.IS_ELECTRON
       ? {
           'proxy-settings': ProxySettings,
@@ -130,7 +131,6 @@ export default defineComponent({
         {
           type: 'sponsor-block-settings',
           title: this.$t('Settings.SponsorBlock Settings.SponsorBlock Settings'),
-          // TODO: replace with SponsorBlock icon
           icon: 'shield'
         },
         ...(process.env.IS_ELECTRON
@@ -157,7 +157,6 @@ export default defineComponent({
         })
       }
 
-      // ensure General Settings is placed first regardless of sorting
       const generalSettingsEntry = {
         type: 'general-settings',
         title: this.$t('Settings.General Settings.General Settings'),
@@ -182,12 +181,20 @@ export default defineComponent({
     window.removeEventListener('resize', this.handleResize)
   },
   methods: {
+    // [NEW METHOD] Reset all settings to default
+    resetAllSettings: function() {
+      if (confirm(this.$t('Settings.Reset all settings to default?'))) {
+        this.$store.dispatch('resetAllSettings')
+        this.$store.dispatch('showToast', this.$t('Settings.Default settings restored'))
+        setTimeout(() => location.reload(), 1000) // Refresh to apply changes
+      }
+    },
+
     handleMounted: function () {
       this.handleResize()
       window.addEventListener('resize', this.handleResize)
       document.addEventListener('scroll', this.markScrolledToSectionAsActive)
 
-      // mark first section as active before any scrolling has taken place
       if (this.settingsSectionComponents.length > 0) {
         const firstSection = document.getElementById(this.settingsSectionComponents[0].type)
         firstSection.classList.add(ACTIVE_CLASS_NAME)
@@ -196,7 +203,6 @@ export default defineComponent({
 
     handleUnlock: function () {
       this.unlocked = true
-
       nextTick(() => {
         this.handleMounted()
       })
@@ -221,13 +227,9 @@ export default defineComponent({
     returnToSettingsMenu: function () {
       const openSection = this.settingsSectionTypeOpenInMobile
       this.settingsSectionTypeOpenInMobile = null
-
-      // focus the corresponding Settings Menu title
       nextTick(() => document.getElementById(openSection)?.focus())
     },
 
-    /* Set the current section to be shown as active in the Settings Menu
-    * if it is the lowest section within the top quarter of the viewport (25vh) */
     markScrolledToSectionAsActive: function() {
       const scrollY = window.scrollY + innerHeight / 4
       this.settingsSectionComponents.forEach((section) => {
@@ -248,7 +250,6 @@ export default defineComponent({
       const wasNotInDesktopView = !this.isInDesktopView
       this.isInDesktopView = window.innerWidth > SETTINGS_MOBILE_WIDTH_THRESHOLD
 
-      // navigate to section that was open in mobile or desktop view, if any
       if (this.isInDesktopView && wasNotInDesktopView && this.settingsSectionTypeOpenInMobile != null) {
         this.navigateToSection(this.settingsSectionTypeOpenInMobile)
         this.settingsSectionTypeOpenInMobile = null
@@ -257,7 +258,6 @@ export default defineComponent({
         if (!activeMenuLink) {
           return
         }
-
         const sectionType = activeMenuLink.id
         this.navigateToSection(sectionType)
       }
@@ -265,7 +265,8 @@ export default defineComponent({
 
     ...mapActions([
       'showKeyboardShortcutPrompt',
-      'updateSettingsSectionSortEnabled'
+      'updateSettingsSectionSortEnabled',
+      'resetAllSettings' // [NEW] Added to mapActions
     ])
   }
 })
