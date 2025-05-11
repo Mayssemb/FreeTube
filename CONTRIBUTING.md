@@ -1,27 +1,38 @@
 # Code Contributions
 
-## Before starting to code
- Please follow these guidelines before starting to code you feature or bugfix.
- * If you want to implement a bugfix or feature request from an existing issue, please comment on that issue that you will work on it. This helps us to coordinate what needs to be done and what not.
- * If you want to implement a feature request without an existing issue, please create an issue, so we know what you are working on and discuss the feature.
- * For major feature implementations make sure you are able to maintain your code in the future in regard to bugs and possible code conflicts in future updates. Optionally you could join the [Matrix](https://matrix.to/#/+freetube:matrix.org) channel, so you will hear instantly if something needs to be worked on.  
+## Before You Start Coding
 
-## Before your Pull Request
-Please follow these guidelines before sending your pull request and making contributions.
-* When you submit a pull request, you agree that your code is published under the [GNU Affero General Public License](https://www.gnu.org/licenses/agpl-3.0.html)
-* Please link the issue you are referring to.
-* Do not include non-free software or modules with your code.
-* Make sure your pull request is set up to merge your branch to FreeTube's development branch.
-* Make sure your branch is up to date with the development branch before submitting your pull request.
-* Stick to a similar style of code already in the project.  Please look at current code to get an idea on how to do this.
-* Follow [ES6](http://es6-features.org/) standards in your code. Ex: Use `let` and `const` instead of `var`. Do not use `function(response){//code}` for callbacks, use `(response) => {//code}`.
-* Comment your code when necessary.  Follow the [JavaScript Documentation and Comments Standard](https://www.drupal.org/docs/develop/standards/javascript/javascript-api-documentation-and-comment-standards) for functions.
-* Please follow proper Vue structure when creating new code / components.  Use existing code as well as the [Vue.js Guide](https://vuejs.org/v2/guide/) for reference.
-* Please test your code.  Make sure new features work as well as existing core features such as watching videos or loading subscriptions.  New features need to work with both the Local API as well as the Invidious API
-* Please make sure your code does not violate any standards set by our linter.  It's up to you to make fixes whenever necessary.  You can run `npm run lint` to check locally and `npm run lint-fix` to automatically fix smaller issues.
-* Please limit the amount of Node Modules that you introduce into the project.  Only include them when **absolutely necessary** for your code to work (Ex: Using nedb for databases) or if a module provides similar functionality to what you are trying to achieve (Ex: Using autolinker to create links to outside URLs instead of writing the functionality myself).
-* Please try to stay involved with the community and maintain your code.  We are only a handful of developers working on FreeTube in our spare time.  We do not have time to work on everything, and it would be nice if you can maintain your code when necessary.
+Please follow these guidelines before starting to work on a feature or bugfix:
 
-# Setting up Your Environment
+- If you're implementing a bugfix or feature from an existing issue, **comment on that issue** to let others know you're working on it. This helps avoid duplicate work and ensures better coordination.
+- If you're working on a new feature that doesn't have an existing issue, **create a new issue first**. This allows the team to discuss and track the feature.
+- For major feature implementations, be prepared to **maintain your code** in the future (e.g., fixing bugs or resolving merge conflicts).  
+  You can also join our [Matrix channel](https://matrix.to/#/+freetube:matrix.org) for real-time collaboration and updates.
 
-Check out the [wiki](https://docs.freetubeapp.io/development/getting-started/) page to learn how to set up your environment and get started.
+## Before Submitting a Pull Request
+
+Please make sure to follow these guidelines before sending a pull request:
+
+- By submitting a pull request, you agree that your code will be published under the [GNU Affero General Public License](https://www.gnu.org/licenses/agpl-3.0.html).
+- Always **link the related issue** in your pull request.
+- Do **not include non-free software or proprietary modules** in your code.
+- Ensure your pull request is set up to **merge into the `development` branch**.
+- Keep your branch **up to date** with the `development` branch before submitting your PR.
+- Follow the **existing code style** in the project. Please review the current code to understand the style and conventions.
+- Use **ES6 standards**:
+  - Prefer `let` and `const` over `var`.
+  - Use arrow functions: `(response) => {}` instead of `function(response) {}`.
+- **Comment your code** where necessary. Follow the [JavaScript Documentation and Comments Standard](https://www.drupal.org/docs/develop/standards/javascript/javascript-api-documentation-and-comment-standards).
+- Follow proper **Vue.js structure** when creating components. Refer to existing code and the [Vue.js Guide](https://vuejs.org/v2/guide/) for best practices.
+- **Test your code thoroughly**:
+  - Ensure that both new and existing features work.
+  - Confirm compatibility with both the Local API and the Invidious API.
+- Run `npm run lint` to check for style issues, and `npm run lint-fix` to fix minor problems automatically.
+- Only add new Node modules if **absolutely necessary**. For example:
+  - ✅ When a module is critical (e.g., `nedb` for database usage).
+  - ✅ When it avoids reinventing functionality (e.g., `autolinker` for URL linking).
+- Please try to **stay involved with the community** and maintain your code. FreeTube is developed by a small team of volunteers, and your continued help is appreciated.
+
+## Setting Up Your Environment
+
+Refer to our [Getting Started guide](https://docs.freetubeapp.io/development/getting-started/) on the wiki for instructions on setting up your development environment.
